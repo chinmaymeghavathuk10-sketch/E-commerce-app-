@@ -1,0 +1,329 @@
+{
+  "entities": {
+    "Admin": {
+      "title": "Admin",
+      "description": "Trusted administrator grant document keyed by Firebase Auth UID.",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email",
+          "maxLength": 200
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["email", "createdAt"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Customer profile containing personal contact details and saved delivery addresses.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "maxLength": 200
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "phone": {
+          "type": "string",
+          "maxLength": 24
+        },
+        "addresses": {
+          "type": "array",
+          "description": "Up to 5 saved shipping addresses."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["uid", "email", "displayName", "phone", "addresses", "createdAt", "updatedAt"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Clothing catalog item with category, garment type, variants, pricing, and inventory stock.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 120
+        },
+        "category": {
+          "type": "string",
+          "enum": ["Men's Wear", "Women's Wear", "Kids' Wear"]
+        },
+        "garmentType": {
+          "type": "string",
+          "enum": ["Shirts", "T-Shirts", "Jeans", "Trousers", "Dresses", "Jackets"]
+        },
+        "description": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 1200
+        },
+        "price": {
+          "type": "number"
+        },
+        "imageUrl": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "sizes": {
+          "type": "array",
+          "description": "Available garment sizes (1 to 10 entries)."
+        },
+        "colors": {
+          "type": "array",
+          "description": "Available garment colorways (1 to 10 entries)."
+        },
+        "stock": {
+          "type": "integer"
+        },
+        "featured": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["id", "name", "category", "garmentType", "description", "price", "imageUrl", "sizes", "colors", "stock", "featured", "createdAt", "updatedAt"]
+    },
+    "Cart": {
+      "title": "Cart",
+      "description": "Per-user shopping bag containing selected product variants and quantities.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "items": {
+          "type": "array",
+          "description": "Up to 30 line items in the cart."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["userId", "items", "updatedAt"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer purchase order including payment details, shipping address, tracking status, and return/refund state.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "orderNumber": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 32
+        },
+        "userId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "customerName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "customerEmail": {
+          "type": "string",
+          "format": "email",
+          "maxLength": 200
+        },
+        "items": {
+          "type": "array",
+          "description": "1 to 30 purchased clothing items."
+        },
+        "subtotal": {
+          "type": "number"
+        },
+        "shippingFee": {
+          "type": "number"
+        },
+        "total": {
+          "type": "number"
+        },
+        "shippingAddress": {
+          "type": "object",
+          "description": "Validated recipient shipping address."
+        },
+        "paymentMethod": {
+          "type": "string",
+          "enum": ["UPI", "Debit Card", "Credit Card", "Net Banking"]
+        },
+        "paymentLast4": {
+          "type": "string",
+          "maxLength": 48
+        },
+        "paymentTxnId": {
+          "type": "string",
+          "minLength": 6,
+          "maxLength": 64
+        },
+        "paymentStatus": {
+          "type": "string",
+          "enum": ["Paid", "Refunded"]
+        },
+        "status": {
+          "type": "string",
+          "enum": ["Confirmed", "Packed", "Shipped", "Out for Delivery", "Delivered", "Cancelled"]
+        },
+        "returnStatus": {
+          "type": "string",
+          "enum": ["None", "Requested", "Approved", "Refunded", "Rejected"]
+        },
+        "returnReason": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "returnRequestedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "orderNumber",
+        "userId",
+        "customerName",
+        "customerEmail",
+        "items",
+        "subtotal",
+        "shippingFee",
+        "total",
+        "shippingAddress",
+        "paymentMethod",
+        "paymentLast4",
+        "paymentTxnId",
+        "paymentStatus",
+        "status",
+        "returnStatus",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "Customer rating and written review for a purchased clothing item.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "productId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "userId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "authorName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "rating": {
+          "type": "integer"
+        },
+        "comment": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 800
+        },
+        "verifiedPurchase": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["id", "productId", "userId", "authorName", "rating", "comment", "verifiedPurchase", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/admins/{uid}": {
+      "schema": { "$ref": "#/entities/Admin" },
+      "description": "Administrator privilege lookup documents."
+    },
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Private customer profile and saved delivery addresses."
+    },
+    "/products/{productId}": {
+      "schema": { "$ref": "#/entities/Product" },
+      "description": "Public apparel product catalog and real-time stock counts."
+    },
+    "/carts/{userId}": {
+      "schema": { "$ref": "#/entities/Cart" },
+      "description": "Authenticated customer shopping cart."
+    },
+    "/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/Order" },
+      "description": "Customer order records with fulfillment tracking and return requests."
+    },
+    "/reviews/{reviewId}": {
+      "schema": { "$ref": "#/entities/Review" },
+      "description": "Customer product ratings and reviews."
+    }
+  }
+}

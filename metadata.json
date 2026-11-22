@@ -1,0 +1,6 @@
+{
+  "name": "Verve & Loom — Modern Clothing Store",
+  "description": "Curated online clothing storefront featuring Men's, Women's, and Kids' apparel with real-time inventory, multi-method checkout, order tracking, reviews, returns, and admin management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
